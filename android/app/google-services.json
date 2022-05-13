@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "289089364557",
+    "firebase_url": "https://novelku-9f1c6-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "novelku-9f1c6",
+    "storage_bucket": "novelku-9f1c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289089364557:android:84e155984b2102710bb204",
+        "android_client_info": {
+          "package_name": "com.example.novelku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289089364557-1hk67da7hujahi0ldt3r9uq3irtjv1n3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMMqnGhWLOuCgR9JQH3iOWL5vwHGi773A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "289089364557-1hk67da7hujahi0ldt3r9uq3irtjv1n3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
