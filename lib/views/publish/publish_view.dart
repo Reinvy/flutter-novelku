@@ -123,6 +123,7 @@ class _buildBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
+    final homeViewModel = Provider.of<HomeViewModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -150,15 +151,17 @@ class _buildBottom extends StatelessWidget {
           ListTile(
             title: const Text('My Novels'),
             trailing: IconButton(
-              icon: const Icon(Icons.sort_by_alpha),
+              icon: const Icon(
+                Icons.sort_by_alpha,
+              ),
               onPressed: () {
-                // if (sortFromA == true) {
-                //   homeViewModel.sortnovels(sortFromA);
-                //   sortFromA = false;
-                // } else {
-                //   homeViewModel.sortnovels(sortFromA);
-                //   sortFromA = true;
-                // }
+                if (homeViewModel.sortFromA == true) {
+                  homeViewModel.sortNovel();
+                  homeViewModel.sortFromA = false;
+                } else {
+                  homeViewModel.sortNovel();
+                  homeViewModel.sortFromA = true;
+                }
               },
             ),
           )

@@ -32,9 +32,17 @@ class LibraryView extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(
-                    Icons.search,
+                    Icons.sort_by_alpha,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (modelView.sortFromA == true) {
+                      modelView.sortNovel();
+                      modelView.sortFromA = false;
+                    } else {
+                      modelView.sortNovel();
+                      modelView.sortFromA = true;
+                    }
+                  },
                 ),
               ],
             ),
@@ -76,7 +84,7 @@ class LibraryView extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  modelView.deleteData(
+                                  modelView.deleteFromLibrary(
                                       modelView.libraryNovels[i].id);
                                   Navigator.pop(context);
                                 },

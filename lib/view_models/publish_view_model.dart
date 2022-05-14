@@ -5,8 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
-import 'package:novelku/data/storage/cloud_storage.dart';
-import '../data/api/novel_api.dart';
+import '../models/storage/cloud_storage.dart';
+import '../models/api/novel_api.dart';
 
 class PublishViewModel with ChangeNotifier {
   File? image;

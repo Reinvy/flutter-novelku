@@ -108,8 +108,18 @@ class DetailView extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.sort),
-                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.sort_by_alpha,
+                  ),
+                  onPressed: () {
+                    if (modelView.sortFromA == true) {
+                      modelView.sortChapter(id);
+                      modelView.sortFromA = false;
+                    } else {
+                      modelView.sortChapter(id);
+                      modelView.sortFromA = true;
+                    }
+                  },
                 ),
               ),
               modelView.novels[id].chapter.isEmpty

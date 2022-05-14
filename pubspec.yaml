@@ -45,7 +45,7 @@ dependencies:
   path: ^1.8.0
 
 flutter_native_splash:
-  color: "#42a5f5"
+  color: "#eeeeee"
   image: assets/images/splash.png
 
 dev_dependencies:

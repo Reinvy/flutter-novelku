@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 
-import '../data/storage/local_storage.dart';
+import '../models/storage/local_storage.dart';
 
 class AuthViewModel with ChangeNotifier {
   bool isAuth = false;

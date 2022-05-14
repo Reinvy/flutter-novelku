@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/storage/local_storage.dart';
+import '../models/storage/local_storage.dart';
 
 class ChapterViewModel with ChangeNotifier {
   double _fontSize = 20;

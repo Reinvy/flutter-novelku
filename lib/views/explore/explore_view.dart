@@ -57,19 +57,33 @@ class ExploreView extends StatelessWidget {
                       ),
                       IconButton(
                         icon: const Icon(
+                          Icons.search,
+                        ),
+                        onPressed: () {
+                          modelView.onChangeSearchState();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.sort_by_alpha,
+                        ),
+                        onPressed: () {
+                          if (modelView.sortFromA == true) {
+                            modelView.sortNovel();
+                            modelView.sortFromA = false;
+                          } else {
+                            modelView.sortNovel();
+                            modelView.sortFromA = true;
+                          }
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
                           Icons.refresh,
                         ),
                         onPressed: () async {
                           modelView.init();
                           await Future.delayed(const Duration(seconds: 2));
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.search,
-                        ),
-                        onPressed: () {
-                          modelView.onChangeSearchState();
                         },
                       ),
                     ],

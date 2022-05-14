@@ -73,13 +73,13 @@ class _HomeViewState extends State<HomeView> {
             ? authViewModel.isAuth
                 ? FloatingActionButton(
                     onPressed: () async {
-                      if (sortFromA == true) {
-                        modelView.sortData(sortFromA);
-                        sortFromA = false;
-                      } else {
-                        modelView.sortData(sortFromA);
-                        sortFromA = true;
-                      }
+                      // if (sortFromA == true) {
+                      //   modelView.sortData(sortFromA);
+                      //   sortFromA = false;
+                      // } else {
+                      //   modelView.sortData(sortFromA);
+                      //   sortFromA = true;
+                      // }
                       // PostViewModel().akses();
                       // PostNovelViewModel().uploadImage();
                       // LocalStorage.setUserData('bahrul@gmail.com', 'section125');
