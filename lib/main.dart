@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         ],
         builder: (context, child) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             scrollBehavior: MyBehavior(),
             initialRoute: HomeView.routeName,
             routes: {
