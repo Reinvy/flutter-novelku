@@ -181,22 +181,14 @@ class HomeViewModel with ChangeNotifier {
       _novels[i].chapter.sort(((a, b) => b.judulChapter
           .toLowerCase()
           .compareTo(a.judulChapter.toLowerCase())));
-      _libraryNovels[i].chapter.sort(((a, b) => b.judulChapter
-          .toLowerCase()
-          .compareTo(a.judulChapter.toLowerCase())));
-      _exploreNovels[i].chapter.sort(((a, b) => b.judulChapter
-          .toLowerCase()
-          .compareTo(a.judulChapter.toLowerCase())));
+
+      sortFromA = false;
     } else {
       _novels[i].chapter.sort(((a, b) => a.judulChapter
           .toLowerCase()
           .compareTo(b.judulChapter.toLowerCase())));
-      _libraryNovels[i].chapter.sort(((a, b) => a.judulChapter
-          .toLowerCase()
-          .compareTo(b.judulChapter.toLowerCase())));
-      _exploreNovels[i].chapter.sort(((a, b) => a.judulChapter
-          .toLowerCase()
-          .compareTo(b.judulChapter.toLowerCase())));
+
+      sortFromA = true;
     }
     notifyListeners();
   }

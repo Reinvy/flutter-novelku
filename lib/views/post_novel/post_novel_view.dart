@@ -183,7 +183,7 @@ class PostNovelView extends StatelessWidget {
                       Navigator.pop(context);
                       await Future.delayed(
                         const Duration(
-                          milliseconds: 500,
+                          milliseconds: 1000,
                         ),
                       );
                       homeViewModel.init();

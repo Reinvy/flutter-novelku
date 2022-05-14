@@ -112,13 +112,7 @@ class DetailView extends StatelessWidget {
                     Icons.sort_by_alpha,
                   ),
                   onPressed: () {
-                    if (modelView.sortFromA == true) {
-                      modelView.sortChapter(id);
-                      modelView.sortFromA = false;
-                    } else {
-                      modelView.sortChapter(id);
-                      modelView.sortFromA = true;
-                    }
+                    modelView.sortChapter(id);
                   },
                 ),
               ),

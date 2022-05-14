@@ -113,8 +113,10 @@ class PublishDetailView extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.sort),
-                  onPressed: () {},
+                  icon: const Icon(Icons.sort_by_alpha),
+                  onPressed: () {
+                    modelView.sortChapter(idNovel);
+                  },
                 ),
               ),
               Flexible(

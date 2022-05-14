@@ -120,8 +120,9 @@ class FormSignIn extends StatelessWidget {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text(
-                                'Login gagal, Pastikan email dan password sudah benar!')),
+                          content: Text(
+                              'Login gagal, Pastikan email dan password sudah benar!'),
+                        ),
                       );
                     }
                   }
