@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
-import 'package:novelku/view_models/auth_view_model.dart';
-import 'package:novelku/view_models/publish_view_model.dart';
-
-import 'package:novelku/view_models/home_view_model.dart';
-
-import 'package:novelku/views/publish/widgets/cover_image.dart';
-import 'package:novelku/views/publish/widgets/profile_image.dart';
-
-import 'package:novelku/views/publish_detail/publish_detail_view.dart';
 import 'package:provider/provider.dart';
+
+import '../../view_models/auth_view_model.dart';
+import '../../view_models/publish_view_model.dart';
+import '../../view_models/novel_view_model.dart';
+import '../widgets/cover_image.dart';
+import '../widgets/profile_image.dart';
+import '../main/publish_detail_view.dart';
 
 class PublishView extends StatelessWidget {
   static String routeName = '/detail';
@@ -37,7 +34,7 @@ class _myNovels extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeViewModel = Provider.of<HomeViewModel>(context);
+    final novelViewModel = Provider.of<NovelViewModel>(context);
     final publishViewModel = Provider.of<PublishViewModel>(context);
 
     return Flexible(
@@ -46,7 +43,7 @@ class _myNovels extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, i) {
-          final novel = homeViewModel.novels[i];
+          final novel = novelViewModel.novels[i];
           return InkWell(
             child: ListTile(
               leading: ConstrainedBox(
@@ -88,14 +85,14 @@ class _myNovels extends StatelessWidget {
                           onPressed: () async {
                             // Fungsi Add to Library
                             publishViewModel
-                                .deleteNovel(homeViewModel.novels[i].id);
+                                .deleteNovel(novelViewModel.novels[i].id);
                             Navigator.pop(context);
                             await Future.delayed(
                               const Duration(
                                 milliseconds: 500,
                               ),
                             );
-                            homeViewModel.init();
+                            novelViewModel.init();
                           },
                           child: const Text('Ok'),
                         ),
@@ -108,7 +105,7 @@ class _myNovels extends StatelessWidget {
         separatorBuilder: (context, i) {
           return const Divider();
         },
-        itemCount: homeViewModel.novels.length,
+        itemCount: novelViewModel.novels.length,
       ),
     );
   }
@@ -123,7 +120,7 @@ class _buildBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    final homeViewModel = Provider.of<HomeViewModel>(context);
+    final novelViewModel = Provider.of<NovelViewModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(
@@ -155,12 +152,12 @@ class _buildBottom extends StatelessWidget {
                 Icons.sort_by_alpha,
               ),
               onPressed: () {
-                if (homeViewModel.sortFromA == true) {
-                  homeViewModel.sortNovel();
-                  homeViewModel.sortFromA = false;
+                if (novelViewModel.sortFromA == true) {
+                  novelViewModel.sortNovel();
+                  novelViewModel.sortFromA = false;
                 } else {
-                  homeViewModel.sortNovel();
-                  homeViewModel.sortFromA = true;
+                  novelViewModel.sortNovel();
+                  novelViewModel.sortFromA = true;
                 }
               },
             ),

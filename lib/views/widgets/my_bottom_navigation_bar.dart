@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
-import '../../view_models/home_view_model.dart';
-import '../explore/explore_view.dart';
-import '../library/library_view.dart';
-import '../post_novel/post_novel_view.dart';
-
-import '../auth/auth_view.dart';
+import '../../constants.dart';
 import '../../view_models/auth_view_model.dart';
+import '../main/explore_view.dart';
+import '../main/library_view.dart';
+import '../main/post_novel_view.dart';
+import '../main/auth_view.dart';
 
-class HomeView extends StatefulWidget {
+class MyBottomNavBar extends StatefulWidget {
   static String routeName = '/';
   static bool listen = true;
-  const HomeView({Key? key}) : super(key: key);
+  const MyBottomNavBar({Key? key}) : super(key: key);
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<MyBottomNavBar> createState() => _MyBottomNavBarState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _MyBottomNavBarState extends State<MyBottomNavBar> {
   final Widget _screen1 = const ExploreView();
   final Widget _screen2 = const LibraryView();
   final Widget _screen3 = const AuthView();
@@ -45,19 +43,17 @@ class _HomeViewState extends State<HomeView> {
 
   void _changeSelectedNavBar(int index) {
     setState(() {
-      _currentIndex = index;
       _pageController.animateToPage(index,
           duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
-      print(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final modelView = Provider.of<HomeViewModel>(context);
     final authViewModel = Provider.of<AuthViewModel>(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: colorPrimary1,
         body: PageView(
           controller: _pageController,
           onPageChanged: (index) {
@@ -72,35 +68,20 @@ class _HomeViewState extends State<HomeView> {
         floatingActionButton: _currentIndex == 2
             ? authViewModel.isAuth
                 ? FloatingActionButton(
+                    backgroundColor: colorPrimary4,
                     onPressed: () async {
-                      // if (sortFromA == true) {
-                      //   modelView.sortData(sortFromA);
-                      //   sortFromA = false;
-                      // } else {
-                      //   modelView.sortData(sortFromA);
-                      //   sortFromA = true;
-                      // }
-                      // PostViewModel().akses();
-                      // PostNovelViewModel().uploadImage();
-                      // LocalStorage.setUserData('bahrul@gmail.com', 'section125');
-                      // LocalStorage.getUserData();
-                      // authViewModel.logOut();
-                      // modelView.postNovel();
-                      // modelView.updateLibrary();
-                      // modelView.getAllData();
-                      // modelView.updateToken();
-                      // modelView.updateLibrary();
-                      // modelView.copyData('-N105m3b_YVZj_hgnBpq');
-                      // HomeScreen.listen = false;
                       await Navigator.pushNamed(
                           context, PostNovelView.routeName);
-                      // HomeScreen.listen = true;
                     },
-                    child: const Icon(Icons.sort_by_alpha),
+                    child: const Icon(
+                      Icons.add,
+                      size: 40,
+                    ),
                   )
                 : null
             : null,
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: colorPrimary2,
           items: const [
             BottomNavigationBarItem(
               label: 'Explore',

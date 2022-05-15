@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../detail/detail_view.dart';
-import '../../view_models/home_view_model.dart';
+import '../../view_models/novel_view_model.dart';
+import '../main/detail_view.dart';
 
 class LibraryView extends StatelessWidget {
   const LibraryView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final modelView = Provider.of<HomeViewModel>(context);
+    final modelView = Provider.of<NovelViewModel>(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

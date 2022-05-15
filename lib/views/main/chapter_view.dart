@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants.dart';
 import '../../view_models/chapter_view_model.dart';
-import '../../view_models/home_view_model.dart';
+import '../../view_models/novel_view_model.dart';
 
 class ChapterView extends StatelessWidget {
   static String routeName = '/chapter';
@@ -11,7 +12,7 @@ class ChapterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final novelProvider = Provider.of<HomeViewModel>(context);
+    final novelProvider = Provider.of<NovelViewModel>(context);
     final modelView = Provider.of<ChapterViewModel>(context);
 
     var arguments = (ModalRoute.of(context)?.settings.arguments ??
@@ -31,7 +32,7 @@ class ChapterView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
             color: modelView.darkTheme == false
-                ? Colors.black.withOpacity(0.2)
+                ? colorPrimary2
                 : Colors.black.withOpacity(0.8),
             child: Row(
               children: [
@@ -39,6 +40,7 @@ class ChapterView extends StatelessWidget {
                   child: Text(
                     chapter.judulChapter,
                     style: TextStyle(
+                      fontWeight: FontWeight.w500,
                       fontSize: 25,
                       color: modelView.darkTheme == false
                           ? Colors.black
@@ -58,7 +60,7 @@ class ChapterView extends StatelessWidget {
               height: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 15),
               color: modelView.darkTheme == false
-                  ? Colors.white
+                  ? colorPrimary1
                   : Colors.black.withOpacity(0.9),
               child: SingleChildScrollView(
                 child: Column(
@@ -90,7 +92,7 @@ class ChapterView extends StatelessWidget {
           alignment: Alignment.center,
           height: 50,
           color: modelView.darkTheme == false
-              ? Colors.black.withOpacity(0.2)
+              ? colorPrimary2
               : Colors.black.withOpacity(0.8),
           child: Stack(
             children: [

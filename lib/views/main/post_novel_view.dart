@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:novelku/view_models/home_view_model.dart';
-import 'package:novelku/view_models/publish_view_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
+import '../../constants.dart';
+import '../../view_models/novel_view_model.dart';
+import '../../view_models/publish_view_model.dart';
 
 class PostNovelView extends StatelessWidget {
   const PostNovelView({Key? key}) : super(key: key);
@@ -10,7 +13,7 @@ class PostNovelView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var modelView = Provider.of<PublishViewModel>(context);
-    var homeViewModel = Provider.of<HomeViewModel>(context);
+    var novelViewModel = Provider.of<NovelViewModel>(context);
     var judulController = TextEditingController();
     var authorController = TextEditingController();
     var sinopsisController = TextEditingController();
@@ -18,7 +21,7 @@ class PostNovelView extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: colorPrimary1,
         body: Form(
           key: _formKey,
           child: Padding(
@@ -26,10 +29,13 @@ class PostNovelView extends StatelessWidget {
                 const EdgeInsets.only(top: 20, left: 25, right: 25, bottom: 20),
             child: ListView(
               children: [
-                const Center(
+                Center(
                   child: Text(
-                    'Select Cover Novel',
-                    style: TextStyle(fontSize: 25),
+                    'Upload Novel',
+                    style: GoogleFonts.comfortaa(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -39,6 +45,7 @@ class PostNovelView extends StatelessWidget {
                   child: Stack(
                     children: [
                       Column(children: [
+                        // Comment this children for Widget Testing
                         modelView.image != null
                             ? Container(
                                 decoration: BoxDecoration(
@@ -73,7 +80,7 @@ class PostNovelView extends StatelessWidget {
                                 },
                                 child: const CircleAvatar(
                                   radius: 30,
-                                  backgroundColor: Colors.green,
+                                  backgroundColor: colorPrimary4,
                                   child: Icon(Icons.camera_alt_rounded,
                                       color: Colors.white, size: 30),
                                 ))),
@@ -143,7 +150,7 @@ class PostNovelView extends StatelessWidget {
                   height: 30,
                 ),
                 TextFormField(
-                  maxLines: 30,
+                  maxLines: 15,
                   controller: sinopsisController,
                   decoration: InputDecoration(
                     errorBorder: const OutlineInputBorder(
@@ -161,6 +168,7 @@ class PostNovelView extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(0),
                     ),
+                    alignLabelWithHint: true,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -173,6 +181,10 @@ class PostNovelView extends StatelessWidget {
                   height: 50,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: colorPrimary4,
+                    textStyle: const TextStyle(fontWeight: FontWeight.w900),
+                  ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       modelView.postNovel(
@@ -183,13 +195,15 @@ class PostNovelView extends StatelessWidget {
                       Navigator.pop(context);
                       await Future.delayed(
                         const Duration(
-                          milliseconds: 1000,
+                          milliseconds: 2000,
                         ),
                       );
-                      homeViewModel.init();
+                      novelViewModel.init();
                     }
                   },
-                  child: const Text('Upload Novel'),
+                  child: const Text(
+                    'Upload Novel',
+                  ),
                 )
               ],
             ),

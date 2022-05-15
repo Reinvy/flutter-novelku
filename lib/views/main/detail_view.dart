@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:novelku/views/chapter/chapter_view.dart';
-import 'package:novelku/view_models/home_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../constants.dart';
+import '../../view_models/novel_view_model.dart';
+import '../main/chapter_view.dart';
 
 class DetailView extends StatelessWidget {
   static String routeName = '/detail';
@@ -11,7 +12,7 @@ class DetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelView = Provider.of<HomeViewModel>(context);
+    final modelView = Provider.of<NovelViewModel>(context);
 
     String arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as String;
@@ -19,6 +20,7 @@ class DetailView extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: colorPrimary1,
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -29,7 +31,7 @@ class DetailView extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                        colorPrimary3.withOpacity(0.5), BlendMode.dstATop),
                     image: NetworkImage(modelView.novels[id].linkImage),
                   ),
                 ),
@@ -90,7 +92,7 @@ class DetailView extends StatelessWidget {
                 ),
               ),
               Container(
-                color: Colors.grey.withOpacity(0.3),
+                color: colorPrimary2,
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,

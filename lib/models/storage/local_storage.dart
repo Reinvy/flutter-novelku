@@ -67,7 +67,6 @@ class LocalStorage {
       await prefs.remove('userData');
     }
     await prefs.setString('userData', jsonUserData);
-    print(data);
   }
 
   static Future getUserData() async {
@@ -76,18 +75,10 @@ class LocalStorage {
 
     if (jsonUserdata != null) {
       var data = jsonDecode(jsonUserdata);
-      print(data['email']);
+
       return data;
     } else {
-      print(null);
       return null;
     }
-  }
-
-  static clearUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userData');
-    var jsonUserdata = prefs.getString('userData');
-    print(jsonUserdata);
   }
 }

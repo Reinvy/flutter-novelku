@@ -35,10 +35,9 @@ class NovelApi {
     };
 
     try {
-      var response = await dio.post(baseUrl, data: formNovel);
-      print('Novel berhasil di tambah : ${response.statusMessage}');
+      await dio.post(baseUrl, data: formNovel);
     } catch (e) {
-      print(e);
+      // rethrow;
     }
   }
 
@@ -57,14 +56,12 @@ class NovelApi {
     };
 
     try {
-      var response = await dio.put(
+      await dio.put(
         baseUrl + id,
         data: formNovel,
       );
-
-      print('Novel berhasil di edit : ${response.statusMessage}');
     } catch (e) {
-      print(e);
+      // rethrow;
     }
   }
 
@@ -73,10 +70,9 @@ class NovelApi {
         'https://novelku-9f1c6-default-rtdb.asia-southeast1.firebasedatabase.app/Novel/$idNovel/.json';
 
     try {
-      var response = await Dio().delete(baseUrl);
-      print('Novel berhasil di hapus : ${response.statusMessage}');
+      await Dio().delete(baseUrl);
     } catch (e) {
-      print(e);
+      // rethrow;
     }
   }
 
@@ -103,10 +99,9 @@ class NovelApi {
         'https://novelku-9f1c6-default-rtdb.asia-southeast1.firebasedatabase.app/Novel/$idNovel/Chapter/$idChapter.json';
 
     try {
-      var response = await Dio().delete(baseUrl);
-      print('Chapter berhasil di hapus : ${response.statusMessage}');
+      await Dio().delete(baseUrl);
     } catch (e) {
-      print(e);
+      // rethrow;
     }
   }
 }

@@ -34,7 +34,6 @@ class AuthViewModel with ChangeNotifier {
   void logOut() {
     myEmail = null;
     isAuth = false;
-    LocalStorage.clearUserData();
     notifyListeners();
   }
 
@@ -43,7 +42,7 @@ class AuthViewModel with ChangeNotifier {
     String url =
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD36XXAk1IOK65G5S9lFn0G3eaczXC85YI';
     try {
-      var response = await dio.post(
+      await dio.post(
         url,
         data: json.encode({
           "email": email,
@@ -51,9 +50,9 @@ class AuthViewModel with ChangeNotifier {
           "returnSecureToken": true,
         }),
       );
-
-      print(response.data);
-    } catch (e) {}
+    } catch (e) {
+      // rethrow;
+    }
     signIn(email, password);
     notifyListeners();
   }
@@ -74,8 +73,6 @@ class AuthViewModel with ChangeNotifier {
         },
       );
 
-      // print(response);
-      // HomeViewModel().updateToken(response.data["idToken"]);
       isAuth = true;
       LocalStorage.setUserData(email, password);
       notifyListeners();

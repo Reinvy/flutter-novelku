@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../models/storage/local_storage.dart';
 import '../models/api/novel_api.dart';
 import '../models/novel_model.dart';
-import '../../models/storage/local_storage.dart';
 
-class HomeViewModel with ChangeNotifier {
-  String idToken =
-      'eyJhbGciOiJSUzI1NiIsImtpZCI6ImVmMzAxNjFhOWMyZGI3ODA5ZjQ1MTNiYjRlZDA4NzNmNDczMmY3MjEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbm92ZWxrdS05ZjFjNiIsImF1ZCI6Im5vdmVsa3UtOWYxYzYiLCJhdXRoX3RpbWUiOjE2NTE5NDE3MTgsInVzZXJfaWQiOiJJTXBlUEdMcDVwWGtTQ1lhSk9xSDZYQXM2bjQzIiwic3ViIjoiSU1wZVBHTHA1cFhrU0NZYUpPcUg2WEFzNm40MyIsImlhdCI6MTY1MTk0MTcxOCwiZXhwIjoxNjUxOTQ1MzE4LCJlbWFpbCI6ImJhaHJ1bEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsiYmFocnVsQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.loSZ-HRz4LCdv-E3Kd3cVm4h0TcIadi0iEIedn36VIYWvZ8AFbRc22mJXc2NAql581NYoXVnV_pfxxzd9fMIGurlMHd4QQvSwl6wjtTTQTB77JiKu30bIXuqh6cMfSnK_halhb54AZ09c8HsC-IgkWyiwiurampZX6K05ZaeROvUsoYikAZ4iSl-Rawo20iARL1OkEPPxsrZsN7-hHi__a3JxwLh8-ozrAABEyovCZFzdzCKvoS0WitS3ywZCSLB1vdFXbimZdcQ4tp7e-4vxykWFItUKU7QYxUk78XUW0lD_mgD-e7Sy115GCXU46Qxw0QAmkSGDTgXWWPMYOtiaA';
-
+class NovelViewModel with ChangeNotifier {
   final List<NovelModel> _novels = [];
   final List<NovelModel> _libraryNovels = [];
   List<NovelModel> _exploreNovels = [];
@@ -20,7 +17,7 @@ class HomeViewModel with ChangeNotifier {
   bool sortFromA = true;
   bool sortChapterFromA = true;
 
-  HomeViewModel() {
+  NovelViewModel() {
     init();
   }
 
@@ -35,9 +32,9 @@ class HomeViewModel with ChangeNotifier {
     final novels = await NovelApi.getNovels();
     if (novels != null) {
       _novels.clear();
-      print(novels.data);
+
       var dataResponse = novels.data as Map<String, dynamic>;
-      print(dataResponse);
+
       dataResponse.forEach((key, value) async {
         List<ChapterModel> chapter = [];
 
@@ -45,7 +42,6 @@ class HomeViewModel with ChangeNotifier {
           var isiChapter = value['Chapter'] as Map<String, dynamic>;
 
           isiChapter.forEach((key, value) {
-            print(value['Content']);
             chapter.add(
               ChapterModel(
                 id: key,
@@ -66,18 +62,14 @@ class HomeViewModel with ChangeNotifier {
               linkImage: value['LinkImage'],
               chapter: chapter));
         } catch (e) {
-          print(e);
+          // rethrow;
         }
       });
 
       _novels.sort(
           ((a, b) => a.judul.toLowerCase().compareTo(b.judul.toLowerCase())));
-      print(_novels.indexWhere((element) => element.id == '-awdkawfawkcwa'));
-
-      notifyListeners();
-    } else {
-      print('Gagal Memuat Data');
     }
+    notifyListeners();
   }
 
   updateExplore() async {
@@ -85,10 +77,9 @@ class HomeViewModel with ChangeNotifier {
       _exploreNovels.clear();
       _exploreNovels = novels.toList();
 
-      print(exploreNovels);
       notifyListeners();
     } catch (e) {
-      print('Gagal mengupdate Explore');
+      // rethrow;
     }
   }
 
@@ -105,10 +96,9 @@ class HomeViewModel with ChangeNotifier {
         }
       }
 
-      print(idNovel);
       notifyListeners();
     } catch (e) {
-      print('Gagal mengupdate library');
+      // rethrow;
     }
   }
 
@@ -116,15 +106,10 @@ class HomeViewModel with ChangeNotifier {
     var index = _novels.indexWhere((element) => element.id == idNovel);
 
     if (_libraryNovels.any((element) => element == _novels[index])) {
-      print('Novel sudah ada');
     } else {
       _libraryNovels.add(novels[index]);
     }
     LocalStorage.setLibrary(libraryNovels);
-
-    print(idNovel);
-
-    print(_libraryNovels[0].linkImage);
   }
 
   deleteFromLibrary(String idNovel) {
@@ -177,18 +162,18 @@ class HomeViewModel with ChangeNotifier {
   }
 
   sortChapter(i) {
-    if (sortFromA == true) {
+    if (sortChapterFromA == true) {
       _novels[i].chapter.sort(((a, b) => b.judulChapter
           .toLowerCase()
           .compareTo(a.judulChapter.toLowerCase())));
 
-      sortFromA = false;
+      sortChapterFromA = false;
     } else {
       _novels[i].chapter.sort(((a, b) => a.judulChapter
           .toLowerCase()
           .compareTo(b.judulChapter.toLowerCase())));
 
-      sortFromA = true;
+      sortChapterFromA = true;
     }
     notifyListeners();
   }

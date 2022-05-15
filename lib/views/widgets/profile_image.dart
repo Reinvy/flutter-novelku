@@ -8,7 +8,8 @@ class ProfileImage extends StatelessWidget {
     return const CircleAvatar(
       radius: 80,
       backgroundColor: Colors.black,
-      backgroundImage: NetworkImage('https://picsum.photos/id/211/200/300'),
+      backgroundImage: NetworkImage(
+          'https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_account_circle_48px-512.png'),
     );
   }
 }

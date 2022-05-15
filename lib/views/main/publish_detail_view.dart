@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:novelku/view_models/publish_view_model.dart';
-import 'package:novelku/views/chapter/chapter_view.dart';
-import 'package:novelku/view_models/home_view_model.dart';
-import 'package:novelku/views/post_chapter/post_chapter_view.dart';
 import 'package:provider/provider.dart';
+
+import '../../constants.dart';
+import '../../view_models/publish_view_model.dart';
+import '../../view_models/novel_view_model.dart';
+import '../main/chapter_view.dart';
+import '../main/post_chapter_view.dart';
 
 class PublishDetailView extends StatelessWidget {
   static String routeName = '/publish_detail';
@@ -13,17 +14,18 @@ class PublishDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modelView = Provider.of<HomeViewModel>(context);
+    final novelViewModel = Provider.of<NovelViewModel>(context);
     final publishViewModel = Provider.of<PublishViewModel>(context);
 
     String keyNovel = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as String;
     int idNovel =
-        modelView.novels.indexWhere((element) => element.id == keyNovel);
-    var chapter = modelView.novels[idNovel].chapter;
+        novelViewModel.novels.indexWhere((element) => element.id == keyNovel);
+    var chapter = novelViewModel.novels[idNovel].chapter;
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: colorPrimary1,
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -34,8 +36,9 @@ class PublishDetailView extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                    image: NetworkImage(modelView.novels[idNovel].linkImage),
+                        colorPrimary2.withOpacity(0.5), BlendMode.dstATop),
+                    image:
+                        NetworkImage(novelViewModel.novels[idNovel].linkImage),
                   ),
                 ),
                 child: Row(
@@ -47,7 +50,7 @@ class PublishDetailView extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          modelView.novels[idNovel].linkImage,
+                          novelViewModel.novels[idNovel].linkImage,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -60,14 +63,14 @@ class PublishDetailView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            modelView.novels[idNovel].judul,
+                            novelViewModel.novels[idNovel].judul,
                             style: GoogleFonts.roboto(fontSize: 25),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            modelView.novels[idNovel].author,
+                            novelViewModel.novels[idNovel].author,
                             style: GoogleFonts.roboto(
                                 fontSize: 15, fontWeight: FontWeight.w500),
                           ),
@@ -76,14 +79,15 @@ class PublishDetailView extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              modelView.novels[idNovel].status == 'Berlanjut'
+                              novelViewModel.novels[idNovel].status ==
+                                      'Berlanjut'
                                   ? const Icon(Icons.schedule_rounded, size: 17)
                                   : const Icon(Icons.check, size: 17),
                               const SizedBox(
                                 width: 5,
                               ),
                               Text(
-                                modelView.novels[idNovel].status,
+                                novelViewModel.novels[idNovel].status,
                                 style: GoogleFonts.roboto(fontSize: 15),
                               ),
                             ],
@@ -95,14 +99,14 @@ class PublishDetailView extends StatelessWidget {
                 ),
               ),
               Container(
-                color: Colors.grey.withOpacity(0.3),
+                color: colorPrimary2,
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 20,
                 ),
                 child: Text(
-                  modelView.novels[idNovel].sinopsis,
+                  novelViewModel.novels[idNovel].sinopsis,
                   style: GoogleFonts.roboto(fontSize: 15),
                 ),
                 // ),
@@ -115,7 +119,7 @@ class PublishDetailView extends StatelessWidget {
                 trailing: IconButton(
                   icon: const Icon(Icons.sort_by_alpha),
                   onPressed: () {
-                    modelView.sortChapter(idNovel);
+                    novelViewModel.sortChapter(idNovel);
                   },
                 ),
               ),
@@ -150,7 +154,7 @@ class PublishDetailView extends StatelessWidget {
                                           milliseconds: 500,
                                         ),
                                       );
-                                      modelView.init();
+                                      novelViewModel.init();
                                     },
                                     child: const Text('Ok'),
                                   ),
@@ -179,11 +183,15 @@ class PublishDetailView extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: colorPrimary4,
           onPressed: () {
             Navigator.pushNamed(context, PostChapterView.routeName,
-                arguments: modelView.novels[idNovel].id);
+                arguments: novelViewModel.novels[idNovel].id);
           },
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            size: 40,
+          ),
         ),
       ),
     );
