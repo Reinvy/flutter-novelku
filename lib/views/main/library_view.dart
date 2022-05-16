@@ -103,6 +103,7 @@ class LibraryView extends StatelessWidget {
                             colorFilter: ColorFilter.mode(
                                 Colors.black.withOpacity(0.4),
                                 BlendMode.darken),
+                            fit: BoxFit.cover,
                             image: NetworkImage(
                               modelView.libraryNovels[i].linkImage,
                             ),
