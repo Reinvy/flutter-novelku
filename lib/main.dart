@@ -114,16 +114,6 @@ class MyApp extends StatelessWidget {
                 );
               }
             },
-            // routes: {
-            //   AuthView.routeName: (context) => const AuthView(),
-            //   MyBottomNavBar.routeName: (context) => const MyBottomNavBar(),
-            //   DetailView.routeName: (context) => const DetailView(),
-            //   PublishDetailView.routeName: (context) =>
-            //       const PublishDetailView(),
-            //   ChapterView.routeName: (context) => const ChapterView(),
-            //   PostNovelView.routeName: (context) => const PostNovelView(),
-            //   PostChapterView.routeName: (context) => const PostChapterView(),
-            // },
           );
         });
   }

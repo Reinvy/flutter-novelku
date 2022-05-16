@@ -53,6 +53,7 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: colorPrimary1,
         body: PageView(
           controller: _pageController,
