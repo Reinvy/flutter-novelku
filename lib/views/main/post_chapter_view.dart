@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novelku/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -14,6 +15,7 @@ class PostChapterView extends StatelessWidget {
   Widget build(BuildContext context) {
     var publishViewModel = Provider.of<PublishViewModel>(context);
     var novelViewModel = Provider.of<NovelViewModel>(context);
+    var authViewModel = Provider.of<AuthViewModel>(context);
     var judulController = TextEditingController();
     var contentController = TextEditingController();
 
@@ -106,7 +108,7 @@ class PostChapterView extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      publishViewModel.postChapter(idNovel,
+                      await publishViewModel.postChapter(idNovel,
                           judulController.text, contentController.text);
                       Navigator.pop(context);
                       await Future.delayed(
@@ -114,7 +116,8 @@ class PostChapterView extends StatelessWidget {
                           milliseconds: 500,
                         ),
                       );
-                      novelViewModel.init();
+                      await novelViewModel.init();
+                      novelViewModel.updateMyNovels(authViewModel.user.nama);
                     },
                     child: const Text('Upload Chapter'),
                   )

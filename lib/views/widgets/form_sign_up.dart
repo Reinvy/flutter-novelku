@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novelku/view_models/novel_view_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../view_models/auth_view_model.dart';
 
@@ -7,6 +9,7 @@ class FormSignUp extends StatelessWidget {
   const FormSignUp({
     Key? key,
     required GlobalKey<FormState> formKey,
+    required this.nameController,
     required this.emailController,
     required this.passwordController,
     required this.passwordController2,
@@ -15,6 +18,7 @@ class FormSignUp extends StatelessWidget {
         super(key: key);
 
   final GlobalKey<FormState> _formKey;
+  final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController passwordController2;
@@ -22,6 +26,7 @@ class FormSignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final novelViewModel = Provider.of<NovelViewModel>(context);
     return Form(
       key: _formKey,
       child: Container(
@@ -35,6 +40,35 @@ class FormSignUp extends StatelessWidget {
             Text(
               'Register',
               style: GoogleFonts.comfortaa(fontSize: 40),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              controller: nameController,
+              decoration: InputDecoration(
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(width: 3),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 2),
+                ),
+                hintText: "Masukan Nama",
+                labelText: "Nama",
+                labelStyle: const TextStyle(color: Colors.black),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Silahkan masukan nama';
+                }
+                return null;
+              },
             ),
             const SizedBox(
               height: 30,
@@ -143,10 +177,14 @@ class FormSignUp extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   primary: Colors.black,
                   minimumSize: const Size(double.infinity, 40)),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  authViewModel.signUp(
-                      emailController.text, passwordController.text);
+                  await authViewModel.signUp(
+                    nameController.text,
+                    emailController.text,
+                    passwordController.text,
+                  );
+                  novelViewModel.updateMyNovels(authViewModel.user.nama);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Berhasil Membuat Akun')),
                   );

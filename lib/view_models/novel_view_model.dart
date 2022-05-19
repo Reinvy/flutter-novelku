@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novelku/view_models/auth_view_model.dart';
 
 import '../../models/storage/local_storage.dart';
 import '../models/api/novel_api.dart';
@@ -8,10 +9,12 @@ class NovelViewModel with ChangeNotifier {
   final List<NovelModel> _novels = [];
   final List<NovelModel> _libraryNovels = [];
   List<NovelModel> _exploreNovels = [];
+  List<NovelModel> _myNovels = [];
 
   List<NovelModel> get novels => _novels;
   List<NovelModel> get libraryNovels => _libraryNovels;
   List<NovelModel> get exploreNovels => _exploreNovels;
+  List<NovelModel> get myNovels => _myNovels;
 
   bool isSearch = false;
   bool sortFromA = true;
@@ -21,7 +24,7 @@ class NovelViewModel with ChangeNotifier {
     init();
   }
 
-  init() async {
+  Future init() async {
     await getAllData();
     updateExplore();
     updateLibrary();
@@ -68,6 +71,22 @@ class NovelViewModel with ChangeNotifier {
 
       _novels.sort(
           ((a, b) => a.judul.toLowerCase().compareTo(b.judul.toLowerCase())));
+    }
+    notifyListeners();
+  }
+
+  updateMyNovels(authorName) async {
+    try {
+      _myNovels.clear();
+      // _myNovels = novels.toList();
+      for (var element in novels) {
+        if (element.author == authorName) {
+          _myNovels.add(element);
+        }
+      }
+      print(authorName);
+    } catch (e) {
+      // rethrow;
     }
     notifyListeners();
   }

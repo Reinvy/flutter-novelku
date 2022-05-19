@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../../view_models/auth_view_model.dart';
+import '../../view_models/novel_view_model.dart';
 
 class FormSignIn extends StatelessWidget {
   const FormSignIn({
@@ -20,6 +22,7 @@ class FormSignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final novelViewModel = Provider.of<NovelViewModel>(context);
     return Form(
       key: _formKey,
       child: Container(
@@ -110,6 +113,8 @@ class FormSignIn extends StatelessWidget {
                 if (_formKey.currentState!.validate()) {
                   var response = await authViewModel.signIn(
                       emailController.text, passwordController.text);
+
+                  // novelViewModel.updateMyNovels(authViewModel.user.nama);
 
                   if (response != null) {
                     // Navigator.pushNamed(context, HomeScreen.routeName);

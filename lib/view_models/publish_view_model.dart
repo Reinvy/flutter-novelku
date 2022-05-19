@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:novelku/models/api/user_api.dart';
 import 'package:path/path.dart';
 
 import '../models/storage/cloud_storage.dart';
@@ -21,6 +22,36 @@ class PublishViewModel with ChangeNotifier {
       }
     } catch (e) {
       // rethrow;
+    }
+    notifyListeners();
+  }
+
+  Future uploadProfile(
+    key,
+    uId,
+    nama,
+    email,
+    coverImage,
+  ) async {
+    await openGallery();
+    if (image != null) {
+      final fileName = basename(image!.path);
+      final destination = 'cover/$fileName';
+      try {
+        var profileImage = await CloudStorage.uploadImage(destination, image!);
+
+        UserAPI.updateProfile(
+          key,
+          uId,
+          nama,
+          email,
+          profileImage,
+          coverImage,
+        );
+        image = null;
+      } catch (e) {
+        // rethrow;
+      }
     }
     notifyListeners();
   }

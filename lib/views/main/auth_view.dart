@@ -12,6 +12,7 @@ class AuthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var nameController = TextEditingController();
     var emailController = TextEditingController();
     var passwordController = TextEditingController();
     var passwordController2 = TextEditingController();
@@ -40,6 +41,7 @@ class AuthView extends StatelessWidget {
                   : FormSignUp(
                       // key: ValueKey<bool>(authViewModel.haveAccount),
                       formKey: _formKey,
+                      nameController: nameController,
                       emailController: emailController,
                       passwordController: passwordController,
                       passwordController2: passwordController2,

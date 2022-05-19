@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novelku/view_models/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -13,6 +14,7 @@ class PostNovelView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var modelView = Provider.of<PublishViewModel>(context);
+    var authViewModel = Provider.of<AuthViewModel>(context);
     var novelViewModel = Provider.of<NovelViewModel>(context);
     var judulController = TextEditingController();
     var authorController = TextEditingController();
@@ -121,35 +123,6 @@ class PostNovelView extends StatelessWidget {
                   height: 30,
                 ),
                 TextFormField(
-                  controller: authorController,
-                  decoration: InputDecoration(
-                    errorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(width: 3),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2),
-                    ),
-                    hintText: "Masukan Nama Author",
-                    labelText: "Author",
-                    labelStyle: const TextStyle(color: Colors.black),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(0),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Silahkan masukan nama author';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                TextFormField(
                   maxLines: 15,
                   controller: sinopsisController,
                   decoration: InputDecoration(
@@ -172,7 +145,7 @@ class PostNovelView extends StatelessWidget {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Silahkan masukan nama author';
+                      return 'Silahkan masukan nama Sinopsis';
                     }
                     return null;
                   },
@@ -190,7 +163,7 @@ class PostNovelView extends StatelessWidget {
                       modelView.postNovel(
                         judulController.text,
                         sinopsisController.text,
-                        authorController.text,
+                        authViewModel.user.nama,
                       );
                       Navigator.pop(context);
                       await Future.delayed(
@@ -198,7 +171,8 @@ class PostNovelView extends StatelessWidget {
                           milliseconds: 2000,
                         ),
                       );
-                      novelViewModel.init();
+                      await novelViewModel.init();
+                      novelViewModel.updateMyNovels(authViewModel.user.nama);
                     }
                   },
                   child: const Text(

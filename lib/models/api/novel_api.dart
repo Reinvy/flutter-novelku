@@ -41,30 +41,6 @@ class NovelApi {
     }
   }
 
-  static Future<void> updateNovel(String id, String judul, String sinopsis,
-      String author, String status, String linkImage) async {
-    var dio = Dio();
-    String baseUrl =
-        'https://novelku-9f1c6-default-rtdb.asia-southeast1.firebasedatabase.app/Novel/$id/.json';
-
-    var formNovel = {
-      'Judul': judul,
-      'Sinopsis': sinopsis,
-      'author': author,
-      'status': status,
-      'LinkImage': linkImage,
-    };
-
-    try {
-      await dio.put(
-        baseUrl + id,
-        data: formNovel,
-      );
-    } catch (e) {
-      // rethrow;
-    }
-  }
-
   static Future<void> deleteNovel(String idNovel) async {
     String baseUrl =
         'https://novelku-9f1c6-default-rtdb.asia-southeast1.firebasedatabase.app/Novel/$idNovel/.json';

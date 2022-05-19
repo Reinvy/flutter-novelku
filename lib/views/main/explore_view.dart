@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../view_models/auth_view_model.dart';
 import '../../view_models/novel_view_model.dart';
 import '../main/detail_view.dart';
 
@@ -11,6 +12,7 @@ class ExploreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final modelView = Provider.of<NovelViewModel>(context);
+    var authViewModel = Provider.of<AuthViewModel>(context);
     TextEditingController _searchController = TextEditingController();
 
     return SingleChildScrollView(
@@ -82,7 +84,8 @@ class ExploreView extends StatelessWidget {
                           Icons.refresh,
                         ),
                         onPressed: () async {
-                          modelView.init();
+                          await modelView.init();
+                          modelView.updateMyNovels(authViewModel.user.nama);
                           await Future.delayed(const Duration(seconds: 2));
                         },
                       ),

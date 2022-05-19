@@ -36,77 +36,92 @@ class _myNovels extends StatelessWidget {
   Widget build(BuildContext context) {
     final novelViewModel = Provider.of<NovelViewModel>(context);
     final publishViewModel = Provider.of<PublishViewModel>(context);
+    final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Flexible(
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, i) {
-          final novel = novelViewModel.novels[i];
-          return InkWell(
-            child: ListTile(
-              leading: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minWidth: 44,
-                  minHeight: 44,
-                  maxWidth: 64,
-                  maxHeight: 64,
+      child: novelViewModel.myNovels.isEmpty
+          ? const Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Center(
+                  child: Text(
+                'Anda Belum Membuat Novel',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
-                child: Image.network(
-                  novel.linkImage,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(
-                novel.judul,
-              ),
-              subtitle: Text(novel.status),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, PublishDetailView.routeName,
-                  arguments: novel.id);
-            },
-            onLongPress: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text('Delete Novel'),
-                      content: const Text('Are you sure?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            // Fungsi Add to Library
-                            publishViewModel
-                                .deleteNovel(novelViewModel.novels[i].id);
-                            Navigator.pop(context);
-                            await Future.delayed(
-                              const Duration(
-                                milliseconds: 500,
+              )),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, i) {
+                final novel = novelViewModel.myNovels[i];
+                return InkWell(
+                  child: ListTile(
+                    leading: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minWidth: 44,
+                        minHeight: 44,
+                        maxWidth: 64,
+                        maxHeight: 64,
+                      ),
+                      child: Image.network(
+                        novel.linkImage,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(
+                      novel.judul,
+                    ),
+                    subtitle: Text(novel.status),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, PublishDetailView.routeName,
+                        arguments: novel.id);
+                  },
+                  onLongPress: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Delete Novel'),
+                            content: const Text('Are you sure?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Cancel'),
                               ),
-                            );
-                            novelViewModel.init();
-                          },
-                          child: const Text('Ok'),
-                        ),
-                      ],
-                    );
-                  });
-            },
-          );
-        },
-        separatorBuilder: (context, i) {
-          return const Divider();
-        },
-        itemCount: novelViewModel.novels.length,
-      ),
+                              TextButton(
+                                onPressed: () async {
+                                  // Fungsi Add to Library
+                                  publishViewModel.deleteNovel(
+                                      novelViewModel.myNovels[i].id);
+                                  Navigator.pop(context);
+                                  await Future.delayed(
+                                    const Duration(
+                                      milliseconds: 500,
+                                    ),
+                                  );
+                                  await novelViewModel.init();
+                                  novelViewModel
+                                      .updateMyNovels(authViewModel.user.nama);
+                                },
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                );
+              },
+              separatorBuilder: (context, i) {
+                return const Divider();
+              },
+              itemCount: novelViewModel.myNovels.length,
+            ),
     );
   }
 }
@@ -126,7 +141,7 @@ class _buildBottom extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            authViewModel.myEmail!,
+            authViewModel.user.nama,
             style: const TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
