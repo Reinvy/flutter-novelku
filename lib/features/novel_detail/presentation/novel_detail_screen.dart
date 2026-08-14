@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/spatial_tokens.dart';
 import '../../../core/widgets/app_network_image.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_view.dart';
@@ -150,16 +151,30 @@ class _Header extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final genreConfig = GenreVisualConfig.fromGenreString(novel.synopsis);
+
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppNetworkImage(
-            url: novel.coverUrl,
-            width: 110,
-            height: 165,
-            borderRadius: BorderRadius.circular(12),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: genreConfig.accentGlow.withValues(alpha: 0.35),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: AppNetworkImage(
+              url: novel.coverUrl,
+              width: 110,
+              height: 165,
+              borderRadius: BorderRadius.circular(14),
+            ),
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
@@ -178,7 +193,30 @@ class _Header extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                _StatusChip(status: novel.status),
+                Row(
+                  children: [
+                    _StatusChip(status: novel.status),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: genreConfig.accentGlow.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: genreConfig.accentGlow.withValues(alpha: 0.5),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        genreConfig.name,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: genreConfig.accentGlow,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 10),
                 Text(
                   '${novel.chapterCount} bab',

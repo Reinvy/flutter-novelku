@@ -32,5 +32,14 @@ abstract final class AppColors {
   static const Color sepiaBackground = Color(0xFFF5ECD9);
   static const Color sepiaText = Color(0xFF3D2E1D);
 
+  // Spatial & Immersive Story Sanctuary Tokens
+  static const Color ribbonBurgundy = Color(0xFF800020);
+  static const Color ribbonGold = Color(0xFFD4AF37);
+  static const Color ribbonShadow = Color(0x66000000);
+  
+  static const Color spatialCardEdge = Color(0x33FFFFFF);
+  static const Color spatialPortalFrame = Color(0xFF1E293B);
+  static const Color spatialPortalGlow = Color(0xFF38BDF8);
+
   static const List<Color> coverGradient = [Color(0x33000000), Color(0x99000000)];
 }

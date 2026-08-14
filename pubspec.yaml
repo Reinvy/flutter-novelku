@@ -44,6 +44,7 @@ dependencies:
 
   # Utils
   intl: ^0.20.0
+  sensors_plus: ^7.1.0
 
 flutter_native_splash:
   color: "#0F766E"

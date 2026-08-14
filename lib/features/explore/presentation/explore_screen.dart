@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_view.dart';
+import '../../../core/widgets/spatial_parallax_container.dart';
 import 'explore_controller.dart';
 import 'novel_card.dart';
 
@@ -44,46 +45,51 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final theme = Theme.of(context);
     final novels = ref.watch(exploreControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Jelajah',
-          style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
+    return SpatialParallaxContainer(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Jelajah Spasial',
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
+          ),
+          actions: [
+            IconButton(
+              tooltip: 'Cari',
+              icon: const Icon(Icons.search_rounded),
+              onPressed: () => _showSearchDialog(),
+            ),
+            IconButton(
+              tooltip: 'Urutkan',
+              icon: const Icon(Icons.sort_rounded),
+              onPressed: () => _showSortMenu(),
+            ),
+            IconButton(
+              tooltip: 'Muat ulang',
+              icon: const Icon(Icons.refresh_rounded),
+              onPressed: () => ref.read(exploreControllerProvider.notifier).refresh(),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            tooltip: 'Cari',
-            icon: const Icon(Icons.search_rounded),
-            onPressed: () => _showSearchDialog(),
+        body: novels.when(
+          loading: () => const LoadingView(),
+          error: (e, _) => ErrorView(
+            message: 'Gagal memuat novel',
+            onRetry: () => ref.read(exploreControllerProvider.notifier).refresh(),
           ),
-          IconButton(
-            tooltip: 'Urutkan',
-            icon: const Icon(Icons.sort_rounded),
-            onPressed: () => _showSortMenu(),
-          ),
-          IconButton(
-            tooltip: 'Muat ulang',
-            icon: const Icon(Icons.refresh_rounded),
-            onPressed: () => ref.read(exploreControllerProvider.notifier).refresh(),
-          ),
-        ],
-      ),
-      body: novels.when(
-        loading: () => const LoadingView(),
-        error: (e, _) => ErrorView(
-          message: 'Gagal memuat novel',
-          onRetry: () => ref.read(exploreControllerProvider.notifier).refresh(),
+          data: (items) {
+            if (items.isEmpty) {
+              return const EmptyView(
+                icon: Icons.menu_book_rounded,
+                title: 'Belum ada novel',
+                subtitle: 'Jelajahi kembali nanti atau ubah pencarian',
+              );
+            }
+            return NovelGrid(novels: items, scrollController: _scrollController);
+          },
         ),
-        data: (items) {
-          if (items.isEmpty) {
-            return const EmptyView(
-              icon: Icons.menu_book_rounded,
-              title: 'Belum ada novel',
-              subtitle: 'Jelajahi kembali nanti atau ubah pencarian',
-            );
-          }
-          return NovelGrid(novels: items, scrollController: _scrollController);
-        },
       ),
     );
   }

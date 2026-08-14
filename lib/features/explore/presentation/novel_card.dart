@@ -1,69 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_spacing.dart';
-import '../../../core/widgets/app_network_image.dart';
 import '../../../core/widgets/error_view.dart';
 import '../../../core/widgets/loading_view.dart';
 import '../../../shared/models/novel.dart';
+import 'spatial_novel_card.dart';
 
-/// Kartu novel untuk grid Jelajah & Pustaka.
+export 'spatial_novel_card.dart';
+
+/// Kompatibilitas mundur: NovelCard sekarang mengarah ke SpatialNovelCard 3D
 class NovelCard extends StatelessWidget {
-  const NovelCard({super.key, required this.novel, this.width});
+  const NovelCard({super.key, required this.novel, this.width, this.onLongPress});
 
   final Novel novel;
   final double? width;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return InkWell(
-      onTap: () => context.push(AppRoutes.novelDetail(novel.id)),
-      borderRadius: BorderRadius.circular(12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AspectRatio(
-            aspectRatio: 2 / 3,
-            child: AppNetworkImage(
-              url: novel.coverUrl,
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            novel.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 2),
-          Row(
-            children: [
-              Icon(Icons.star_rounded, size: 14, color: theme.colorScheme.secondary),
-              const SizedBox(width: 2),
-              Text(
-                novel.averageRating?.toStringAsFixed(1) ?? '—',
-                style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-              ),
-              const SizedBox(width: 6),
-              Icon(Icons.menu_book_rounded, size: 13, color: theme.colorScheme.onSurfaceVariant),
-              const SizedBox(width: 2),
-              Text(
-                '${novel.chapterCount}',
-                style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return SpatialNovelCard(
+      novel: novel,
+      width: width,
+      onLongPress: onLongPress,
     );
   }
 }
 
-/// Grid responsif novel.
+/// Grid responsif novel spasial dengan kedalaman 3D
 class NovelGrid extends StatelessWidget {
   const NovelGrid({
     super.key,
@@ -81,13 +45,13 @@ class NovelGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    final crossAxisCount = width >= 600 ? 4 : 3;
-    final spacing = AppSpacing.md;
+    final crossAxisCount = width >= 900 ? 4 : (width >= 600 ? 3 : 2);
+    final spacing = AppSpacing.lg;
 
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
         if (onLoadMore != null &&
-            notification.metrics.extentAfter < 200 &&
+            notification.metrics.extentAfter < 250 &&
             notification is ScrollUpdateNotification) {
           onLoadMore!();
         }
@@ -95,18 +59,22 @@ class NovelGrid extends StatelessWidget {
       },
       child: GridView.builder(
         controller: scrollController,
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: spacing,
+          mainAxisSpacing: spacing + 8,
           crossAxisSpacing: spacing,
-          childAspectRatio: 0.5,
+          childAspectRatio: 0.58,
         ),
         itemCount: novels.length,
-        itemBuilder: (context, index) => GestureDetector(
-          onLongPress: onLongPress == null ? null : () => onLongPress!(novels[index]),
-          child: NovelCard(novel: novels[index]),
-        ),
+        itemBuilder: (context, index) {
+          final novel = novels[index];
+          return SpatialNovelCard(
+            novel: novel,
+            onLongPress: onLongPress == null ? null : () => onLongPress!(novel),
+          );
+        },
       ),
     );
   }

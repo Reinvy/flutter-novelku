@@ -30,4 +30,21 @@ abstract final class AppTypography {
         color: color,
         fontWeight: FontWeight.w400,
       );
+
+  /// Tipografi mengambang untuk Focus Mode (Pinch-to-Immerse)
+  static TextStyle spatialFocusReader(double size, Color color) => GoogleFonts.lora(
+        fontSize: size,
+        height: 1.85,
+        letterSpacing: 0.2,
+        color: color,
+        fontWeight: FontWeight.w400,
+      );
+
+  /// Tipografi judul bab spasial
+  static TextStyle spatialChapterTitle(Color color) => GoogleFonts.cinzel(
+        fontSize: 22,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.2,
+        color: color,
+      );
 }
