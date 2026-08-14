@@ -1,4 +1,4 @@
-package com.example.novelku
+package com.novelku.app
 
 import io.flutter.embedding.android.FlutterActivity
 
